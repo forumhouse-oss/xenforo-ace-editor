@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="FH_AceEditor" title="[FH] Интеграция Ace Editor" version_string="1.0" version_id="0" url="" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <admin_template_modifications>
+    <modification template="template_edit" modification_key="FH_AceEditorTemplateEdit" description="Редактирование шаблона" execution_order="10" enabled="0" action="str_replace">
+      <find><![CDATA[<xen:textboxunit name="template"]]></find>
+      <replace><![CDATA[$0 data-editor="html"]]></replace>
+    </modification>
+    <modification template="base_template_modification_edit" modification_key="FH_AceEditorTemplateModEdit" description="Модификация шаблона" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#<xen:textboxunit label="{xen:phrase (find|replace)}:"#is]]></find>
+      <replace><![CDATA[$0 data-editor="html"]]></replace>
+    </modification>
+    <modification template="page_container_js" modification_key="FH_AceEditor_PageContainer" description="Вызываем AceEditor" execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#$#]]></find>
+      <replace><![CDATA[<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+<script>
+    // Hook up ACE editor to all textareas with data-editor attribute
+    $(document).ready(function () {
+        $('textarea[data-editor]').each(function () {
+            var textarea = $(this);
+ 
+            var mode = textarea.data('editor');
+ 
+            var editDiv = $('<div>', {
+                position: 'absolute',
+                'class': textarea.attr('class')
+            }).insertBefore(textarea);
+ 
+            textarea.css('display', 'none');
+ 
+            var editor = ace.edit(editDiv[0]);
+            editor.renderer.setShowGutter(false);
+            editor.getSession().setValue(textarea.val());
+            editor.getSession().setMode("ace/mode/" + mode);
+
+            editor.setOptions({
+                minLines: 12,
+                maxLines: 35
+            });
+            
+            // copy back to textarea on form submit...
+            textarea.closest('form').find(':submit').click(function () {
+                textarea.val(editor.getSession().getValue());
+            })
+ 
+        });
+    });
+</script>]]></replace>
+    </modification>
+  </admin_template_modifications>
+  <code_events/>
+  <code_event_listeners/>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups/>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases/>
+  <route_prefixes/>
+  <style_properties/>
+  <templates/>
+  <public_template_modifications/>
+  <bb_code_media_sites/>
+</addon>
